@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+case "${1:-}" in
+inspect)
+  echo "wwan-diag-kit v0.1"
+  echo
+  echo "Kernel:"
+  uname -a
+  echo
+  if command -v mmcli >/dev/null; then
+    mmcli -L || true
+  else
+    echo "mmcli not installed"
+  fi
+  echo
+  if command -v nmcli >/dev/null; then
+    nmcli device status || true
+  else
+    echo "nmcli not installed"
+  fi
+  ;;
+bundle)
+  echo "Bundle generation coming in v0.2"
+  ;;
+version)
+  echo "wwan-diag-kit v0.1"
+  ;;
+*)
+  echo "Usage: wwanctl {inspect|bundle|version}"
+  exit 1
+esac
