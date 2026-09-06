@@ -12,7 +12,7 @@ It collects and summarises WWAN state from:
 - routing and DNS state
 - relevant journal logs
 
-## v0.1.0 scope
+## Scope
 
 This release observes only.
 
@@ -40,9 +40,12 @@ chmod +x bin/wwanctl
 Optionally install locally:
 
 ```bash
-sudo install -m 0755 bin/wwanctl /usr/local/bin/wwanctl
+sudo ./install.sh
 wwanctl inspect
 ```
+
+The installer puts the launcher and libraries under `/usr/local/lib/wwan-diag-kit`
+and links `/usr/local/bin/wwanctl` to the launcher.
 
 ## Commands
 
@@ -69,3 +72,7 @@ IMSI and ICCID.
 
 This is a best-effort first pass, not a guarantee. Always review bundles before
 sharing publicly.
+
+## Development
+
+Run `python3 tests/check.py` for installation and identifier-redaction checks using synthetic data.

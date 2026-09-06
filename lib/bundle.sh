@@ -33,7 +33,8 @@ bundle_shell() {
   } | redact_stream > "${outdir}/${name}"
 }
 
-create_bundle() {
+create_bundle() (
+  umask 077
   local ts
   local host
   local outdir
@@ -42,12 +43,13 @@ create_bundle() {
   ts="$(date '+%Y%m%d-%H%M%S')"
   host="$(hostname 2>/dev/null || echo host)"
   outdir="wwan-diag-bundle-${host}-${ts}"
-  tarname="${outdir}.tar.gz"
 
-  mkdir -p "${outdir}" || {
+  outdir="$(mktemp -d "./${outdir}.XXXXXX")" || {
     echo "Failed to create bundle directory: ${outdir}" >&2
     exit 3
   }
+
+  tarname="${outdir}.tar.gz"
 
   print_banner > "${outdir}/summary.txt"
   {
@@ -113,4 +115,4 @@ EOF
   rm -rf "${outdir}"
 
   echo "Created ${tarname}"
-}
+)
