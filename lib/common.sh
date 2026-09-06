@@ -19,10 +19,10 @@ print_banner() {
 }
 
 redact_stream() {
+  # Handle both human-readable labels and mmcli --output-keyvalue keys.
+  # Preserve the label but replace quoted or unquoted identifier values.
   sed -E \
-    -e 's/([Ii][Mm][Ee][Ii]|equipment id|equipment identifier)[[:space:]:=]+[0-9]{10,20}/\1: <redacted>/g' \
-    -e 's/([Ii][Mm][Ss][Ii])[[:space:]:=]+[0-9]{10,20}/\1: <redacted>/g' \
-    -e 's/([Ii][Cc][Cc][Ii][Dd]|sim identifier)[[:space:]:=]+[0-9]{10,25}/\1: <redacted>/g'
+    -e "s/((imei|imsi|iccid|equipment[ ._-]*(id|identifier)|sim[ ._-]*(properties[ ._-]*)?identifier)[[:space:]]*[:=][[:space:]]*)['\"]?[0-9]{10,25}['\"]?/\\1<redacted>/gI"
 }
 
 run_or_note() {
